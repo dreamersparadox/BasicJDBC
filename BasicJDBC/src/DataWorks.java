@@ -102,7 +102,7 @@ public class DataWorks
     	{
     		ResultSetMetaData metaData = resultSet.getMetaData();
     		int numberOfColumns = metaData.getColumnCount();
-    		System.out.println("Database Records Listing");
+    		System.out.println("Employee details based on region "+region+" -");
 
     		for (int i = 1; i <= numberOfColumns; i++) 
     		{
@@ -124,7 +124,7 @@ public class DataWorks
     	} 
     	else 
     	{
-    		System.out.println("No database records foundn");
+    		System.out.println("No such employee/s exist.");
     	}
 	}
 	
@@ -141,7 +141,7 @@ public class DataWorks
     	// Path to CSV file
     	String pathToCSV = "C:\\users\\"+System.getProperty("user.name")+"\\desktop\\Report.xlsx";
     	
-    	FileWriter mFileWriter = new FileWriter(pathToCSV, true);
+    	FileWriter fw = new FileWriter(pathToCSV, true);
     	CSVWriter writer = new CSVWriter(mFileWriter);
     	Boolean includeHeaders = true;
     	
@@ -154,7 +154,7 @@ public class DataWorks
     	System.out.println("Report generated. Reported located at - "+pathToCSV);
     	// Closing resources
     	writer.close();    	
-    	mFileWriter.close();
+    	fw.close();
     	resultSet.close();
     	statement.close();
         conn.close();
