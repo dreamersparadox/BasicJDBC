@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,20 +17,20 @@ import org.jsoup.select.Elements;
 public class TheCrawler 
 {
 	
-	static Scanner t = new Scanner(System.in);
-	static CharSequence seq = null;
+	static Scanner s = new Scanner(System.in);
+	static String seq = null;
 	static ArrayList<String> ulinks = new ArrayList<String>();	
 	static ArrayList<String> vlinks = new ArrayList<String>();
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException 
 	{
-		Scanner s = new Scanner(System.in);
 		System.out.println("Enter what you want to do -");
 		System.out.println(""
-				+ "1. Get links\n"
+				+ "1. Get Links\n"
 				+ "2. Get Images\n"
 				+ "3. Get CSS\n"
-				+ "4. Scripts\n"
+				+ "4. Get Scripts\n"
 				+ "5. Exit");
 		
 		int o = s.nextInt();
@@ -60,22 +59,22 @@ public class TheCrawler
 		System.out.println("Process has been completed!!!");
 	}
 
+	@SuppressWarnings("unused")
 	private static void getScripts() throws IOException 
 	{
-		Scanner ss = new Scanner(System.in);
 		System.out.println("1. From URL\n2. From URL list");
-		int n = ss.nextInt();
+		int n = s.nextInt();
 		
 		switch(n)
 		{
 			case 1:
 				
 				System.out.println("Enter the URL: ");
-				String url1 = ss.next();
+				String url1 = s.next();
 				System.out.println("Enter the filename to store the script links: ");
-				String fname = t.next();
+				String fname = s.next();
 				fname = fname+".txt";
-				File file = new File(fname);
+				@SuppressWarnings("unused") File file = new File(fname);
 				
 				scriptList(url1, fname);
 				break;
@@ -83,11 +82,11 @@ public class TheCrawler
 			case 2:
 				
 				System.out.println("Enter the filename with URLs: ");
-				String fname1 = ss.next();
+				String fname1 = s.next();
 				
 				BufferedReader reader = new BufferedReader(new FileReader(fname1+".txt"));
 				System.out.println("Enter the filename to store the script links: ");
-				String fname2 = t.next();
+				String fname2 = s.next();
 				fname2 = fname2+".txt";
 				File file1 = new File(fname2);
 				
@@ -101,7 +100,7 @@ public class TheCrawler
 				break;
 				
 			default:
-				System.out.println("Wrong INput!!");
+				System.out.println("Wrong Input!!");
 		}
 	}
 
@@ -122,20 +121,20 @@ public class TheCrawler
         }
 	}
 
+	@SuppressWarnings({ "resource", "unused" })
 	private static void getsCSS() throws IOException 
 	{
-		Scanner ss = new Scanner(System.in);
 		System.out.println("1. From URL\n2. From URL list");
-		int n = ss.nextInt();
+		int n = s.nextInt();
 		
 		switch(n)
 		{
 			case 1:
 				
 				System.out.println("Enter the URL: ");
-				String url1 = ss.next();
+				String url1 = s.next();
 				System.out.println("Enter the filename to store the stylesheet links: ");
-				String fname = t.next();
+				String fname = s.next();
 				fname = fname+".txt";
 				File file = new File(fname);
 				
@@ -145,11 +144,11 @@ public class TheCrawler
 			case 2:
 				
 				System.out.println("Enter the filename with URLs: ");
-				String fname1 = ss.next();
+				String fname1 = s.next();
 				
 				BufferedReader reader = new BufferedReader(new FileReader(fname1+".txt"));
 				System.out.println("Enter the filename to store the stylesheet links: ");
-				String fname2 = t.next();
+				String fname2 = s.next();
 				fname2 = fname2+".txt";
 				File file1 = new File(fname2);
 				
@@ -183,20 +182,20 @@ public class TheCrawler
         }
 	}
 
+	@SuppressWarnings({ "resource", "unused" })
 	private static void getImages() throws IOException 
 	{
-		Scanner ss = new Scanner(System.in);
 		System.out.println("1. From URL\n2. From URL list");
-		int n = ss.nextInt();
+		int n = s.nextInt();
 		
 		switch(n)
 		{
 			case 1:
 				
 				System.out.println("Enter the URL: ");
-				String url1 = ss.next();
+				String url1 = s.next();
 				System.out.println("Enter the filename to store the image links: ");
-				String fname = t.next();
+				String fname = s.next();
 				fname = fname+".txt";
 				File file = new File(fname);
 				imgList(url1, fname);
@@ -205,11 +204,11 @@ public class TheCrawler
 			case 2:
 				
 				System.out.println("Enter the filename with URLs: ");
-				String fname1 = ss.next();
+				String fname1 = s.next();
 				
 				BufferedReader reader = new BufferedReader(new FileReader(fname1+".txt"));
 				System.out.println("Enter the filename to store the image links: ");
-				String fname2 = t.next();
+				String fname2 = s.next();
 				fname2 = fname2+".txt";
 				File file1 = new File(fname2);
 				
@@ -244,14 +243,14 @@ public class TheCrawler
         }
 	}
 
+	@SuppressWarnings("resource")
 	private static void getLinks() throws IOException 
 	{
-		Scanner r = new Scanner(System.in);
 		System.out.println("Enter the domain:");
-		String domain = r.nextLine();
+		String domain = s.next();
 		
 		System.out.println("Enter the filename: ");
-		String fname = r.nextLine();
+		String fname = s.next();
 		
 		seq = domain;
 		
@@ -284,18 +283,26 @@ public class TheCrawler
 		
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static void get(String url) throws IOException 
 	{
+		Document doc = null;
+		Elements links = null;
+		
 		vlinks.add(url);
 
-    	System.out.println("Fetching links from: "+url);
+		if(url.startsWith(seq))
+			System.out.println("Fetching links from: "+url);
     	
-        Document doc = Jsoup.connect(url).get();
-        Elements links = doc.select("a[href]");
+		if(url.startsWith(seq))
+		{
+			doc = Jsoup.connect(url).get();
+			links = doc.select("a[href]");
+		}
         
         for (Element link : links) 
         {
-        	if(link.attr("abs:href").contains(seq))
+        	if(link.attr("abs:href").startsWith(seq))
         		ulinks.add(link.attr("abs:href"));
         }
                
